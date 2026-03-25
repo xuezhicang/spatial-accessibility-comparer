@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E0TQ5M0YLT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}  // DEFINE gtag
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-E0TQ5M0YLT');
+
+    // 
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname
+    });
+  </script>
+  <!-- <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E0TQ5M0YLT');
+  </script> -->
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>spatial-accessibility-comparer</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10.8.0/ol.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/ol@10.8.0/dist/ol.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ngageoint/geopackage@4.2.6/dist/geopackage.min.js"></script>
+  <script src="js/script.js" defer></script>
+
+</head>
+<body>
+   
+
+<div class="right-layer-panel">
+  <div class="inline-row">
+    <input type="checkbox" id="toggleLayer1" checked />
+    <label for="toggleLayer1">Show Facility Layer</label>
+  </div>
+  <div class="legend">
+    <strong>Facility Layer  Legend</strong>
+    <div id="legendContent1">Null</div>
+  </div>
+
+  <div class="inline-row">
+    <input type="checkbox" id="toggleLayer2" checked />
+    <label for="toggleLayer2">Show Population Layer</label>
+  </div>
+  <div class="legend">
+    <strong>Population Layer Legend</strong>
+    <div id="legendContent2">Null</div>
+  </div>
+
+  <div class="inline-row">
+    <input type="checkbox" id="toggleLayer3" checked />
+    <label for="toggleLayer3">Show Accessibility Results</label>
+  </div>
+    <div class="legend">
+      <strong>Accessibility bivariate legend</strong>
+      <div id="legendContent3">Null</div>
+    </div>
+
+</div>
+
+    
+</div>
+  <div class="toolbar">
+    <h2>Spatial Accessibility Comparer</h2>
+    <p>This web application allows users to upload two GeoPackage files, visualize them on a basemap, and compute spatial accessibility measures such as 2SFCA and gravity-based accessibility. Users can select fields from each layer to use in the accessibility calculations, and the results are displayed as new layers on the map.</p>
+
+
+   
+  <div class="divider">
+    <span class="divider-title">Step 1: Load Data</span>
+    <p class="divider-desc">
+    Users can either load their own GeoPackage files or use the provided sample data for Cook County hospitals and census tracts.
+    </p>
+  </div>
+
+  <div class="panel">
+  <h3>No data? Use the sample dataset (Cook County hospitals and census tracts).</h3>
+  <button id="loadExampleBtn">Use Sample Data</button>  
+  </div>
+
+
+<div class="divider-title">
+  <span>or</span>
+</div>
+
+  <div class="panel">
+    <h3>Upload Facility GeoPackage</h3>
+    <input type="file" id="gpkgFile1" accept=".gpkg" />
+    <button id="loadBtn1">Load Facility Layer</button>
+
+
+    <label for="fieldSelect1" style="display:block; margin-top:10px;">Please select the bed capacity field</label>
+    <select id="fieldSelect1" disabled>
+      <option value="">Please load data first</option>
+    </select>
+
+    <div class="status" id="status1">Choose a .gpkg file of Facility Layer.</div>
+
+
+  </div>
+
+
+
+  <div class="panel">
+    <h3>Upload Population GeoPackage</h3>
+    <input type="file" id="gpkgFile2" accept=".gpkg" />
+    <button id="loadBtn2">Load Population Layer</button>
+
+
+    <label for="fieldSelect2" style="display:block; margin-top:10px;">Please select the population field</label>
+    <select id="fieldSelect2" disabled>
+      <option value="">Please load data first</option>
+    </select>
+
+    <div class="status" id="status2">Choose a .gpkg file of Population Layer.</div>
+
+  </div>
+
+
+  <div class="divider">
+    <span class="divider-title">Step 2: Compute Accessibility</span>
+    <p class="divider-desc">
+    After loading the data, users can calculate accessibility. The results will be displayed as new layers on the map, and legends will be provided for interpretation.
+  </p>
+
+  </div>
+  <div class="panel">
+    <h3>2sfca results</h3>
+    <button id="loadBtn3">Compute Accessibility</button>
+    <div class="status" id="status3"></div>
+  </div>
+
+
+  <div class="divider">
+    <span class="divider-title">Step 3: Examine Results</span>
+    <p class="divider-desc">
+    Click on the map to view detailed accessibility classes for specific locations. Refer to the legends to interpret how accessibility varies across the study area under different methods.
+  </p>
+
+  </div>
+
+
+  </div>
+
+
+
+  <div id="map"></div>
+
+  <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+  </div>
+
+</body>
+</html>
