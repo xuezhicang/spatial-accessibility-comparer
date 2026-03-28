@@ -37,6 +37,39 @@
     font-size: 16px;
   }
 
+
+  #layerList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  }
+
+  .layer-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    cursor: grab;
+  }
+
+  .layer-item.dragging {
+    opacity: 0.5;
+  }
+
+  .layer-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drag-handle {
+    cursor: grab;
+    font-size: 16px;
+    user-select: none;
+    color: #666;
+  }
+
+
   .toolbar input[type="file"],
   .toolbar button,
   .toolbar select {

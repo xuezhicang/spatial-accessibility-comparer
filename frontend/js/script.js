@@ -275,6 +275,7 @@
     };
 
 
+
     layerState1.layer = new ol.layer.Vector({
       source: layerState1.source,
       visible: true,
@@ -300,6 +301,11 @@
     });
 
 
+    const panelLayerMap = {
+    layer1: layerState1.layer, // Facility
+    layer2: layerState2.layer, // Population
+    layer3: layerState3.layer  // Accessibility
+    };
 
 
     const map = new ol.Map({
@@ -327,6 +333,67 @@
     
 
 
+  function updateLayerOrderFromPanel() {
+    const items = [...document.querySelectorAll("#layerList .layer-item")];
+
+    // top item in panel should draw on top on map
+    items.forEach((item, index) => {
+      const layerId = item.dataset.layerId;
+      const layer = panelLayerMap[layerId];
+      if (layer) {
+        layer.setZIndex(items.length - index);
+      }
+    });
+  }
+
+
+  function initLayerDragAndDrop() {
+    const layerList = document.getElementById("layerList");
+    let draggedItem = null;
+
+    layerList.addEventListener("dragstart", (e) => {
+      const item = e.target.closest(".layer-item");
+      if (!item) return;
+      draggedItem = item;
+      item.classList.add("dragging");
+    });
+
+    layerList.addEventListener("dragend", (e) => {
+      const item = e.target.closest(".layer-item");
+      if (item) item.classList.remove("dragging");
+      draggedItem = null;
+      updateLayerOrderFromPanel();
+    });
+
+    layerList.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      const afterElement = getDragAfterElement(layerList, e.clientY);
+      if (!draggedItem) return;
+
+      if (afterElement == null) {
+        layerList.appendChild(draggedItem);
+      } else {
+        layerList.insertBefore(draggedItem, afterElement);
+      }
+    });
+  }
+
+  function getDragAfterElement(container, y) {
+    const draggableElements = [
+      ...container.querySelectorAll(".layer-item:not(.dragging)")
+    ];
+
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
 
 
 
@@ -673,6 +740,17 @@ function updateBivariateLegend(legendEl, matrix, xLabel, yLabel) {
       }
     }
 
+    function moveAccessibilityToTop() {
+      const layerList = document.getElementById("layerList");
+      const accessibilityItem = layerList?.querySelector('[data-layer-id="layer3"]');
+
+      if (!layerList || !accessibilityItem) {
+        return;}
+
+      // put accessibility at the top of the legend panel
+      layerList.prepend(accessibilityItem);
+    }
+
 
     bindFieldSelector(layerState1, "Layer 1");
     bindFieldSelector(layerState2, "Layer 2");
@@ -681,6 +759,9 @@ function updateBivariateLegend(legendEl, matrix, xLabel, yLabel) {
     bindLayerToggle(layerState1, "Layer 1");
     bindLayerToggle(layerState2, "Layer 2");
     bindLayerToggle(layerState3, "Accessibility Layer");
+
+
+
 
     document.getElementById("loadBtn1").addEventListener("click", async function() {
       const file = document.getElementById("gpkgFile1").files[0];
@@ -792,7 +873,12 @@ function updateBivariateLegend(legendEl, matrix, xLabel, yLabel) {
           { type: "application/geopackage+sqlite3" }
         );
 
-        loadGeoPackageToState(file, layerState3, "accesslibility Layer")
+        await loadGeoPackageToState(file, layerState3, "accesslibility Layer");
+
+
+        // move accessibility legend/layer item to top of right panel
+        moveAccessibilityToTop();
+        updateLayerOrderFromPanel();
 
 
         // // optional: keep a downloadable file
@@ -823,6 +909,10 @@ function getClassLabel(val) {
 const container = document.getElementById("popup");
 const content = document.getElementById("popup-content");
 const closer = document.getElementById("popup-closer");
+
+initLayerDragAndDrop();
+updateLayerOrderFromPanel();
+
 
 // IMPORTANT: use ol.Overlay if you are using the global OpenLayers build
 const overlay = new ol.Overlay({

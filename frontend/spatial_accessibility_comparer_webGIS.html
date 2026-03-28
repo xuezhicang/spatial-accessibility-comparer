@@ -45,33 +45,43 @@
    
 
 <div class="right-layer-panel">
-  <div class="inline-row">
-    <input type="checkbox" id="toggleLayer1" checked />
-    <label for="toggleLayer1">Show Facility Layer</label>
-  </div>
-  <div class="legend">
-    <strong>Facility Layer  Legend</strong>
-    <div id="legendContent1">Null</div>
-  </div>
-
-  <div class="inline-row">
-    <input type="checkbox" id="toggleLayer2" checked />
-    <label for="toggleLayer2">Show Population Layer</label>
-  </div>
-  <div class="legend">
-    <strong>Population Layer Legend</strong>
-    <div id="legendContent2">Null</div>
-  </div>
-
-  <div class="inline-row">
-    <input type="checkbox" id="toggleLayer3" checked />
-    <label for="toggleLayer3">Show Accessibility Results</label>
-  </div>
-    <div class="legend">
-      <strong>Accessibility bivariate legend</strong>
-      <div id="legendContent3">Null</div>
+  <div id="layerList">
+    <div class="layer-item" draggable="true" data-layer-id="layer1">
+      <div class="layer-item-header inline-row">
+        <span class="drag-handle">☰</span>
+        <input type="checkbox" id="toggleLayer1" checked />
+        <label for="toggleLayer1">Show Facility Layer</label>
+      </div>
+      <div class="legend">
+        <strong>Facility Layer Legend</strong>
+        <div id="legendContent1">Null</div>
+      </div>
     </div>
 
+    <div class="layer-item" draggable="true" data-layer-id="layer2">
+      <div class="layer-item-header inline-row">
+        <span class="drag-handle">☰</span>
+        <input type="checkbox" id="toggleLayer2" checked />
+        <label for="toggleLayer2">Show Population Layer</label>
+      </div>
+      <div class="legend">
+        <strong>Population Layer Legend</strong>
+        <div id="legendContent2">Null</div>
+      </div>
+    </div>
+
+    <div class="layer-item" draggable="true" data-layer-id="layer3">
+      <div class="layer-item-header inline-row">
+        <span class="drag-handle">☰</span>
+        <input type="checkbox" id="toggleLayer3" checked />
+        <label for="toggleLayer3">Show Accessibility Results</label>
+      </div>
+      <div class="legend">
+        <strong>Accessibility bivariate legend</strong>
+        <div id="legendContent3">Null</div>
+      </div>
+    </div>
+  </div>
 </div>
 
     
@@ -150,7 +160,8 @@
   <div class="divider">
     <span class="divider-title">Step 3: Examine Results</span>
     <p class="divider-desc">
-    Click on the map to view detailed accessibility classes for specific locations. Refer to the legends to interpret how accessibility varies across the study area under different methods.
+    Click anywhere on the map to explore accessibility classes at specific locations. Use the legends to interpret how accessibility varies across the study area under different methods. 
+    You can drag and rearrange the legend panel to change the layer order.
   </p>
 
   </div>
